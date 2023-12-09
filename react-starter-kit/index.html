@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+    <head>
+        <title>React-starter-kit</title>
+        <meta charset="utf-8">
+        <script src="js/react.min.js"></script>
+        <script src="js/react-dom.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+        <link rel="stylesheet" href="css/styles.css" />
+    </head>
+    <body>
+        <div id="root"></div>
+        <script type="text/babel">
+            const Movies = [
+                {
+                    title: "Batman",
+                    year: 2022,
+                    rating: 4.2
+                },
+                {
+                    title: "Spiderman",
+                    year: 2007,
+                    rating: 4.8
+                }
+            ];
+            var Card = React.createClass({
+                render: function() {
+                    return (
+                        <div>
+                            <h2>{this.props.title}</h2>
+                            <div>
+                                <p>{this.props.year}</p>
+                                <p>{this.props.rating}</p>
+                            </div>
+                            <button>Edit</button>
+                            <button onClick={this.props.onClick}>Delete</button>
+                        </div>
+                    );
+                }
+            });
+            var App = React.createClass({
+                deleteMovie: function (movie) {
+                    this.state.Movies.splice(this.state.Movies.indexOf(movie), 1)
+                    this.setState({Movies: this.state.Movies})
+                },
+                getInitialState: function () {
+                    return {
+                        Movies: this.props.Movies.splice(0)
+                    }
+                },
+                render: function () {
+                    const that = this;
+                    return (
+                        <div>
+                            {this.state.Movies.map(function(movie){
+                                return (
+                                    <Card onClick={that.deleteMovie.bind(null, movie)} title={movie.title} year={movie.year} rating={movie.rating}/>
+                                )
+                            })}
+                        </div>
+                    )
+                }
+            })
+
+            ReactDOM.render(<App Movies={Movies}/>, document.body);
+        </script>
+    </body>
+</html>
